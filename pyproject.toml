@@ -19,4 +19,4 @@ requires = ["setuptools>=68.2.2"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-fuzzy-fastq = "fuzzy_fastq:app"
+fuzzy-fastq = "fuzzy_fastq.fuzzy-fastq:app"
