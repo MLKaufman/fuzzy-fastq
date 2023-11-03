@@ -1,5 +1,5 @@
 [project]
-name = "fuzzy-fastq"
+name = "fuzzyfastq"
 version = "0.1.0"
 authors = [
     {name = "Michael Kaufman", email = "mlkaufman@gmail.com"},
@@ -19,4 +19,4 @@ requires = ["setuptools>=68.2.2"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-fuzzy-fastq = "fuzzy_fastq.fuzzy-fastq:app"
+fuzzyfastq = "fuzzyfastq.fuzzyfastq:app"
