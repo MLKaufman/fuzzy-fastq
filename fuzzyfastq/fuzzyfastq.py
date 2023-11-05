@@ -4,6 +4,7 @@ import regex
 import typer
 from typing import Dict, Tuple
 import matplotlib.pyplot as plt
+import pyfastx
 
 app = typer.Typer()
 
@@ -101,18 +102,13 @@ def count_matches(
 ) -> Tuple[int, Dict[str, int]]:
     total_reads = 0
     sequence_counts = {key: 0 for key in sequence_dict.keys()}
-    with gzip.open(fastq_file, 'rt') as file:
-        for line in file:
-            if line.startswith('@'):
-                total_reads += 1
-                sequence = next(file).strip()
-                for name, barcode in sequence_dict.items():
-                    max_errors = max(1, round(len(barcode) * mismatch_threshold))
-                    match = regex.search(f'({barcode}){{e<={max_errors}}}', sequence)
-                    if match:
-                        sequence_counts[name] += 1
-                next(file)  # Skip the '+' line
-                next(file)  # Skip the quality line
+    for seqname,seq,qual in pyfastx.Fastq(fastq_file, build_index=False):
+        total_reads += 1
+        for name, barcode in sequence_dict.items():
+            max_errors = max(1, round(len(barcode) * mismatch_threshold))
+            match = regex.search(f'({barcode}){{e<={max_errors}}}', seq)
+            if match:
+                sequence_counts[name] += 1
     return total_reads, sequence_counts
 
 def process_files(
